@@ -13,9 +13,10 @@ Change the game to follow these rules:
 3. Add another dice to the game, so that there are two dices now. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS code for the first one.)
 */
 
-var gamePlaying, scores, roundScore, activePlayer, dice, previousDice, winScore;
+var gamePlaying, scores, roundScore, activePlayer, dice1, dice2, winScore;
 var defaultScore = 100;
-var diceDOM = document.querySelector('.dice');
+var dice1DOM = document.querySelector('.dice1');
+var dice2DOM = document.querySelector('.dice2');
 
 init();
 
@@ -24,28 +25,31 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 
     if(gamePlaying){
         // 1. Get random number
-        dice = Math.floor(Math.random() * 6) + 1;
+        dice1 = Math.floor(Math.random() * 6) + 1;
+        dice2 = Math.floor(Math.random() * 6) + 1;
 
         // 2. display the result
-        console.log('dice :', dice);
-        diceDOM.style.display = 'block';
-        diceDOM.src = 'dice-' + dice + '.png';
+        console.log('dice1 :', dice1);
+        console.log('dice2 :', dice2);
+        dice1DOM.style.display = 'block';
+        dice1DOM.src = 'dice-' + dice1 + '.png';
+        dice2DOM.style.display = 'block';
+        dice2DOM.src = 'dice-' + dice2 + '.png';
 
         // Challenge 1: two 6 in a row
         // 3. Next player IF dice = 1 or two 6 in a row
-        if(dice === 1){
+        if(dice1 === 1 || dice2 === 1){
             nextPlayer();
         }
 
-        else if (dice === 6 && previousDice === 6){
+        else if (dice1 === 6 && dice2 === 6){
             scores[activePlayer] = 0;
             document.querySelector('#score-' + activePlayer).textContent = '0';
             nextPlayer();
         }
 
         else{
-            previousDice = dice;
-            roundScore += dice;
+            roundScore += dice1 + dice2;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
         }
     }
@@ -67,7 +71,8 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
             gamePlaying = false;
 
             document.querySelector('#name-' + activePlayer).textContent = 'Player ' + activePlayer + ' is the winner!';
-            diceDOM.style.display = 'none';
+            dice1DOM.style.display = 'none';
+            dice2DOM.style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
         }
@@ -80,9 +85,10 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
 document.querySelector('.btn-new').addEventListener('click', init);
 
 function nextPlayer(){
-    previousDice = 0;
-
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+    console.log('\n');
+    console.log('activePlayer :', activePlayer);
 
     roundScore = 0;
     document.getElementById('current-0').textContent = '0';
@@ -92,14 +98,15 @@ function nextPlayer(){
     document.querySelector('.player-1-panel').classList.toggle('active');
     // toggle -> add or remove
 
-    diceDOM.style.display = 'none';
+    dice1DOM.style.display = 'none';
+    dice2DOM.style.display = 'none';
 }
 
 function init(){
     console.log('\nCalling init()\n');
 
     // Challenge 1: two 6 in a row
-    previousDice = 0;
+    // Replaced by Challenge 3
 
     //Challenge 2: set win score
     winScore = parseInt(document.querySelector('.winScore').value);
@@ -114,7 +121,8 @@ function init(){
     activePlayer = 0;
     roundScore = 0;
 
-    document.querySelector('.dice').style.display = 'none';
+    dice1DOM.style.display = 'none';
+    dice2DOM.style.display = 'none';
 
     document.querySelector('#name-0').textContent = 'Player 1';
     document.querySelector('#name-1').textContent = 'Player 2';
