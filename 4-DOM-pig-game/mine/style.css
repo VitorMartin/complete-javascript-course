@@ -45,7 +45,27 @@ body {
     padding: 100px;
 }
 
+/* 
+CHALLENGE 2: Set win score
+*/
 
+.winScore{
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #555;
+    font-size: 14px;
+    font-family: 'Lato';
+    text-align: center;
+    padding: 10px;
+    width: 200px;
+    text-transform: uppercase;
+}
+
+.winScore:focus{
+    outline: none;
+}
 
 /**********************************************
 *** PLAYERS
@@ -137,7 +157,7 @@ i {
     transition: margin 0.3s;
 }
 
-.btn-new { top: 45px;}
+.btn-new { top: 80px;}
 .btn-roll { top: 403px;}
 .btn-hold { top: 467px;}
 

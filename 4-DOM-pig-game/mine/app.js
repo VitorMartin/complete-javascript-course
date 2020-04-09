@@ -19,6 +19,7 @@ Change the game to follow these rules:
 */
 
 var gamePlaying, scores, roundScore, activePlayer, dice, previousDice, winScore;
+var defaultScore = 100;
 var diceDOM = document.querySelector('.dice');
 
 init();
@@ -104,6 +105,14 @@ function init(){
 
     // Challenge 1: two 6 in a row
     previousDice = 0;
+
+    //Challenge 2: set win score
+    winScore = parseInt(document.querySelector('.winScore').value);
+    if(isNaN(winScore)){
+        winScore = defaultScore;
+        document.querySelector('.winScore').value = defaultScore;
+    }
+    console.log('winScore :', winScore);
 
     gamePlaying = true;
     scores = [0,0];
