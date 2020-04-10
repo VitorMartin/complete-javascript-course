@@ -7,3 +7,7 @@
 
 // var bool = (previousDice.indexOf(dice1) !== -1) || (previousDice.indexOf(dice2)!== -1);
 // console.log('bool :', bool);
+
+// var x = parseInt('-1');
+// console.log(x);
+// console.log(typeof x);
