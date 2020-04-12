@@ -13,9 +13,8 @@ var BudgetCtrl = (function () {
 
     var data = {
         allItems: {
-            expenses: [],
-            incomes: [],
-            
+            exp: [],
+            inc: [],
         },
         totals: {
             exp: 0,
@@ -24,9 +23,36 @@ var BudgetCtrl = (function () {
     }
 
 
-
     return {
-        
+        addItem: function (type, description, value) {
+            console.log('addItem() called');
+
+            var newItem, id;
+
+            // [1 2 3 4] --> next ID = 5
+            // [1 3 4 8] --> next ID = 9
+            // ID = lastID = 1
+
+            // Create new ID
+            if (data.allItems[type].length > 0) {
+                id = data.allItems[type][data.allItems[type].length - 1].id + 1;
+            } else {
+                id = 0;
+            }
+
+            // Create new item based on 'inc' or 'exp' type
+            type === 'exp' ? newItem = new Expense(id, description, value) :
+                newItem = new Income(id, description, value);
+            
+            // Push it into our 'data' structure
+            data.allItems[type].push(newItem);
+
+            return newItem;
+        },
+
+        testing: function () {
+            console.log('data :', data);
+        }
     }
 })();
 
@@ -39,6 +65,7 @@ var UIController = (function () {
         inputValue: '.add__value',
         inputBtn: '.add__btn'
     }
+
 
     return {
         getInput: function () {
@@ -90,15 +117,21 @@ var Controller = (function (budgetCtrl, uiController) {
         4. Calculate the budget
         5. Display the budget on the UI
         */
-        
-        var input = uiController.getInput();
-    };
+        var input, newItem;
 
-    
+
+        // 1.
+        input = uiController.getInput();
+
+        // 2.
+        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+        budgetCtrl.testing();
+    };
 
     var newEvent = function() {
         console.log('\n--------------------');
     };
+
 
     return {
         init: function () {
