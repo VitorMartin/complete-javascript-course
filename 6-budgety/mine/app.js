@@ -36,14 +36,29 @@ var UIController = (function () {
 ////////////////////
 
 var Controller = (function (budgetCtrl, uiController) {
-    function newEvent() {
-        console.log('\n--------------------');
-    };
+    var setupEventListeners = function () {
+        var DOM = uiController.getDOMStrings();
 
-    var DOM = uiController.getDOMStrings();
+        document.querySelector(DOM.inputBtn).addEventListener('click', function() {
+            newEvent();
+            console.log("add__btn clicked");
+    
+            ctrlAddItem();
+        });
+    
+        document.addEventListener('keypress', function (event) {
+            console.log('Event: ' + event);
+    
+            if (event.key === 'Enter') {
+                newEvent();
+                console.log('Key: ' + event.key);
+                ctrlAddItem();
+            }
+        })    
+    }
 
     var ctrlAddItem = function () {
-        console.log('ctrlAddItem called');
+        console.log('ctrlAddItem() called');
         /*
         1. Get the field input data
         2. Add the item to the budget controller
@@ -55,28 +70,20 @@ var Controller = (function (budgetCtrl, uiController) {
         var input = uiController.getInput();
     };
 
-    document.querySelector(DOM.inputBtn).addEventListener('click', function() {
-        newEvent();
-        console.log("add__btn clicked");
+    
 
-        ctrlAddItem();
-    });
-
-    document.addEventListener('keypress', function (event) {
-        newEvent();
-        console.log('Event: ' + event);
-
-        if (event.key === 'Enter') {
-            newEvent();
-            console.log('Key: ' + event.key);
-            ctrlAddItem();
-        }
-    })
-
-
-
+    var newEvent = function() {
+        console.log('\n--------------------');
+    };
 
     return {
-
+        init: function () {
+            newEvent();
+            console.log('init() called');
+            setupEventListeners();
+        }
     }
 })(BudgetCtrl, UIController);
+
+
+Controller.init();
