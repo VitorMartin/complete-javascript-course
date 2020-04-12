@@ -50,7 +50,7 @@ var BudgetCtrl = (function () {
             return newItem;
         },
 
-        testing: function () {
+        showData: function () {
             console.log('data :', data);
         }
     }
@@ -63,11 +63,17 @@ var UIController = (function () {
         inputType: '.add__type',
         inputDescription: '.add__description',
         inputValue: '.add__value',
-        inputBtn: '.add__btn'
+        inputBtn: '.add__btn',
+        incomeContainer: '.income__list',
+        expensesContainer: '.expenses__list'
     }
 
 
     return {
+        getDOMStrings: function () {
+            return DOMStrings;
+        },
+
         getInput: function () {
             var input = {
                 type: document.querySelector(DOMStrings.inputType).value, // inc or exp (+ and -)
@@ -78,8 +84,29 @@ var UIController = (function () {
             return input;
         },
 
-        getDOMStrings: function () {
-            return DOMStrings;
+        addListItem: function (newItem, type) {
+            console.log('addListItem() called:');
+            console.log('newItem :', newItem);
+
+            var html, newHtml, element;
+
+            // Create HTML string with placeholder text
+            // ***deixar + e -?***
+            if (type === 'inc') {
+                element = DOMStrings.incomeContainer;
+                html = '<div class="item clearfix" id="income-%id%"> <div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">+ %value%</div> <div class="item__delete"> <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div> </div> </div>';
+            } else if (type ==='exp') {
+                element = DOMStrings.expensesContainer;
+                html = '<div class="item clearfix" id="expense-%id%"> <div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">- %value%</div> <div class="item__percentage">21%</div> <div class="item__delete"> <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div> </div> </div>';
+            }
+
+            // Replace the placeholder text with some actual data
+            newHtml = html.replace('%id%', newItem.id);
+            newHtml = newHtml.replace('%description%', newItem.description);
+            newHtml = newHtml.replace('%value%', newItem.value);
+
+            // Insert the HTML into the DOM
+            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         }
     }
 })();
@@ -125,7 +152,10 @@ var Controller = (function (budgetCtrl, uiController) {
 
         // 2.
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
-        budgetCtrl.testing();
+        budgetCtrl.showData();
+
+        // 3.
+        uiController.addListItem(newItem, input.type);
     };
 
     var newEvent = function() {
