@@ -78,7 +78,7 @@ var UIController = (function () {
             var input = {
                 type: document.querySelector(DOMStrings.inputType).value, // inc or exp (+ and -)
                 description: document.querySelector(DOMStrings.inputDescription).value,
-                value: document.querySelector(DOMStrings.inputValue).value
+                value: parseFloat(document.querySelector(DOMStrings.inputValue).value)
             };
             console.log('input :', input);
             return input;
@@ -147,7 +147,14 @@ var Controller = (function (budgetCtrl, uiController) {
                 ctrlAddItem();
             }
         })    
-    }
+    };
+
+    var updateBudget = function() {
+        //1. Calculate and return the budget
+
+        //2. Display the budget on the UI
+
+    };
 
     var ctrlAddItem = function () {
         console.log('ctrlAddItem() called');
@@ -156,7 +163,7 @@ var Controller = (function (budgetCtrl, uiController) {
         2. Add the item to the budget controller
         3. Add the item to the UI
         4. Clear input fields
-        5. Calculate the budget
+        5. Calculate and update the budget
         6. Display the budget on the UI
         */
         var input, newItem;
@@ -165,15 +172,20 @@ var Controller = (function (budgetCtrl, uiController) {
         // 1.
         input = uiController.getInput();
 
-        // 2.
-        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
-        budgetCtrl.showData();
+        if(input.description !== '' && !isNaN(input.value) && input.value > 0){
+            // 2.
+            newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+            budgetCtrl.showData();
 
-        // 3.
-        uiController.addListItem(newItem, input.type);
+            // 3.
+            uiController.addListItem(newItem, input.type);
 
-        // 4.
-        uiController.clearFields();
+            // 4.
+            uiController.clearFields();
+
+            // 5.
+            updateBudget();
+        }       
     };
 
     var newEvent = function() {
